@@ -1,6 +1,5 @@
-package testovoe;
-
 import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class ArithmeticExpressionEvaluator {
@@ -44,19 +43,32 @@ class ArithmeticExpressionEvaluator {
     }
 
     public static int getResultSubstr(String subStr) {
-        String op = getOperator(subStr);
-        if (op.isEmpty()) {
-            return Integer.parseInt(subStr);
+        subStr = subStr.replace(" ", "");
+
+
+        Pattern multDivPattern = Pattern.compile("(\\d+)([*/])(\\d+)");
+        Matcher numbersMatch = multDivPattern.matcher(subStr);
+        while (numbersMatch.find()) {
+            int num1 = Integer.parseInt(numbersMatch.group(1));
+            int num2 = Integer.parseInt(numbersMatch.group(3));
+            String op = numbersMatch.group(2);
+            int res = op.equals("*") ? num1 * num2 : (num2 != 0 ? num1 / num2 : 0);
+            subStr = subStr.substring(0, numbersMatch.start()) + res + subStr.substring(numbersMatch.end());
+            return getResultSubstr(subStr); // рекурсивный вызов
         }
-        String[] numbers = subStr.split(Pattern.quote(op));
-        int num1 = Integer.parseInt(numbers[0].trim());
-        int num2 = Integer.parseInt(numbers[1].trim());
-        return switch (op) {
-            case "+" -> num1 + num2;
-            case "-" -> num1 - num2;
-            case "*" -> num1 * num2;
-            case "/" -> num2 != 0 ? num1 / num2 : 0;
-            default -> throw new IllegalStateException("Unknown operator");
-        };
+
+        Pattern sumDifPattern = Pattern.compile("(\\d+)([+-])(\\d+)");
+        numbersMatch = sumDifPattern.matcher(subStr);
+        while (numbersMatch.find()) {
+            int num1 = Integer.parseInt(numbersMatch.group(1));
+            int num2 = Integer.parseInt(numbersMatch.group(3));
+            String op = numbersMatch.group(2);
+            int res = op.equals("+") ? num1 + num2 : num1 - num2;
+            subStr = subStr.substring(0, numbersMatch.start()) + res + subStr.substring(numbersMatch.end());
+            return getResultSubstr(subStr);
+        }
+
+        return Integer.parseInt(subStr);
     }
+
 }
