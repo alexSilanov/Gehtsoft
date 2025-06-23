@@ -8,7 +8,6 @@ public class StartApp {
                 "3. Arithmetic Expression Evaluation\n" +
                 "4. Exit\n";
         System.out.println(greeting);
-        System.out.println("");
         int chosedOption = scanner.nextInt();
         scanner.nextLine();
 
@@ -17,7 +16,11 @@ public class StartApp {
             case 2 -> CaeserCipher.startDecrypt(scanner);
             case 3 -> ArithmeticExpressionEvaluator.evaluateResult(scanner);
             case 4 -> System.exit(0);
-
         }
+        System.out.println("Continue? (y/n):\n");
+        String answer = scanner.next().toLowerCase();
+        if(answer.equals("y")) {
+            System.out.println(greeting);
+        } else System.exit(0);
     }
 }
