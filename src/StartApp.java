@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class StartApp {
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
         String greeting = "Welcome to Gehtsoft Technical Assessment\nPlease choose an option:\n1. Caesar Cipher Encryption\n" +
                 "2. Caesar Cipher Decryption  \n" +
@@ -20,7 +21,7 @@ public class StartApp {
         System.out.println("Continue? (y/n):\n");
         String answer = scanner.next().toLowerCase();
         if(answer.equals("y")) {
-            System.out.println(greeting);
+            main(null);
         } else System.exit(0);
     }
 }
