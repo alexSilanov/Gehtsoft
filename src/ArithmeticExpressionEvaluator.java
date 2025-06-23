@@ -20,6 +20,28 @@ class ArithmeticExpressionEvaluator {
         System.out.println("Output " + finalResult);
     }
 
+    public static void evaluateResult(Scanner scan) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Type input: ");
+        String s = scanner.nextLine().replace(" ", "");
+
+        String subStrExpr = getSubStrInBrackets(s);
+
+        int finalResult;
+
+        if (subStrExpr.isEmpty()) {
+            finalResult = getResultSubstr(s);
+        } else {
+            int result = getResultSubstr(subStrExpr);
+
+            String newExpr = s.replace("(" + subStrExpr + ")", String.valueOf(result));
+
+            finalResult = getResultSubstr(newExpr);
+        }
+
+        System.out.println("Output " + finalResult);
+    }
+
     public static String getSubStrInBrackets(String s) {
         String str = s.replace(" ", "");
         int startBracket = str.indexOf('(');

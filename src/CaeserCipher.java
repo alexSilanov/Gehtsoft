@@ -19,43 +19,88 @@ public class CaeserCipher {
         System.out.println("Decrypted: " + decrypted);
     }
 
+    public static void startEncrypt(Scanner scanner) {
+        System.out.print("Enter text to encrypt: ");
+        String text = scanner.nextLine();
+
+        System.out.print("Enter shift value: ");
+        int shift = scanner.nextInt();
+        scanner.nextLine();
+
+        String encrypted = encrypt(text, shift);
+        System.out.println("Result: " + encrypted);
+    }
+
+    public static void startDecrypt(Scanner scanner) {
+        System.out.print("Enter text to decrypt: ");
+        String text = scanner.nextLine();
+
+        System.out.print("Enter shift value: ");
+        int shift = scanner.nextInt();
+        scanner.nextLine();
+
+        String decrypted = decrypt(text, shift);
+        System.out.println("Result: " + decrypted);
+    }
+
     public static String encrypt(String input, int shift) {
-        char[] latAlphabet = {
+        char[] latAlphabetSmall = {
                 'a','b','c','d','e','f','g','h','i','j','k','l','m',
                 'n','o','p','q','r','s','t','u','v','w','x','y','z'
         };
-
-        char[] rusAlphabet = {
+        char[] latAlphabetUpper = {
+                'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+        };
+        char[] rusAlphabetSmall = {
                 'а','б','в','г','д','е','ё','ж','з','и','й','к','л','м',
                 'н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ',
                 'ъ','ы','ь','э','ю','я'
         };
+        char[] rusAlphabetUpper = {
+                'А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М',
+                'Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ',
+                'Ъ','Ы','Ь','Э','Ю','Я'
+        };
 
-        char[] alphabet;
         StringBuilder result = new StringBuilder();
 
-        // Determine if the text is in Latin or Cyrillic
-        if (Character.UnicodeBlock.of(input.charAt(0)) == Character.UnicodeBlock.BASIC_LATIN) {
-            alphabet = latAlphabet;
-        } else {
-            alphabet = rusAlphabet;
-        }
-
         for (int i = 0; i < input.length(); i++) {
-            for (int j = 0; j < alphabet.length; j++) {
-                if (input.charAt(i) == alphabet[j]) {
-                    if (shift < 0) {
-                        result.append(alphabet[(j + shift + alphabet.length) % alphabet.length]);
-                    } else {
-                        result.append(alphabet[(j + shift) % alphabet.length]);
+            char ch = input.charAt(i);
+            char[] alphabet = null;
+
+            if (contains(ch, latAlphabetSmall)) {
+                alphabet = latAlphabetSmall;
+            } else if (contains(ch, latAlphabetUpper)) {
+                alphabet = latAlphabetUpper;
+            } else if (contains(ch, rusAlphabetSmall)) {
+                alphabet = rusAlphabetSmall;
+            } else if (contains(ch, rusAlphabetUpper)) {
+                alphabet = rusAlphabetUpper;
+            }
+
+            if (alphabet != null) {
+                int len = alphabet.length;
+                for (int j = 0; j < len; j++) {
+                    if (alphabet[j] == ch) {
+                        result.append(alphabet[(j + shift + len) % len]);
                     }
-                    break;
                 }
+            } else {
+                result.append(ch);
             }
         }
 
         return result.toString();
     }
+
+    private static boolean contains(char ch, char[] alphabet) {
+        for (char c : alphabet) {
+            if (c == ch) return true;
+        }
+        return false;
+    }
+
 
     public static String decrypt(String input, int shift) {
         return encrypt(input, -shift);
