@@ -1,6 +1,8 @@
 # Gehtsoft
 Console project of a test case for a company Gehtsoft.
-To run it, go to the StartApp class.
+To run it, go to the StartApp class or bash: as first javac StartApp.java CaeserCipher.java ArithmeticExpressionEvaluator.java and after java StartApp
+
+
 
 #  Caesar Cipher (with Latin & Cyrillic support)
 This Java application implements the Caesar Cipher, a simple substitution encryption algorithm, supporting both Latin (A-Z, a-z) and Cyrillic (А-Я, а-я) alphabets.
